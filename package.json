@@ -7,6 +7,7 @@
     "start": "remotion studio index.ts",
     "render:hd": "remotion render index.ts Intro out-HD.mp4 --codec=h264 --crf=16",
     "render:4k": "remotion render index.ts Intro out-4K.mp4 --codec=h264 --crf=17 --scale=2",
+    "render:vertical": "remotion render index.ts IntroVertical out-Vertical-HD.mp4 --codec=h264 --crf=16",
     "still": "remotion still index.ts Intro out-still.png --frame=150"
   },
   "dependencies": {
