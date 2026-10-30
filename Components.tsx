@@ -1,14 +1,16 @@
 import React from 'react';
-import {Easing, Img, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Easing, Img, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {C} from './theme';
 import {F} from './fonts';
 
 /* ------------------------------------------------------------------ */
 /* C1  GridBG — soft paper background, faint teal grid, drifting glow  */
 /* ------------------------------------------------------------------ */
-export const GridBG: React.FC<{dark?: boolean}> = ({dark}) => {
+// `offset` = absolute start frame of the scene. Using the ABSOLUTE frame keeps the grid in
+// exactly the same place when one scene cross-fades into the next (no jump at the cut).
+export const GridBG: React.FC<{dark?: boolean; offset?: number}> = ({dark, offset = 0}) => {
   const frame = useCurrentFrame();
-  const drift = (frame * 0.4) % 80;
+  const drift = ((frame + offset) * 0.4) % 80;
   const line = dark ? 'rgba(255,255,255,0.10)' : 'rgba(15,163,160,0.10)';
   return (
     <div style={{position: 'absolute', inset: 0, background: dark ? C.teal700 : C.paper, overflow: 'hidden'}}>
@@ -317,11 +319,14 @@ export const CTA: React.FC<{text: string; delay?: number; fontFamily?: string; s
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 30,
           transform: `translateX(${Math.sin(frame / 7) * 3}px)`,
         }}
       >
-        →
+        {/* vector arrow (SVG) - no font glyph, always crisp at HD and 4K */}
+        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={C.ink} strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 12H19" />
+          <path d="M13 5.5L19.5 12L13 18.5" />
+        </svg>
       </span>
     </div>
   );
@@ -369,4 +374,29 @@ export const Smile: React.FC<{size?: number; color?: string}> = ({size = 40, col
     <circle cx="26" cy="16" r="2.4" fill={color} />
     <path d="M12 24 Q20 32 28 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" />
   </svg>
+);
+
+/* ------------------------------------------------------------------ */
+/* ColorGrade — one teal grade over the WHOLE video so every scene     */
+/* (teal hook/outro + light scenes + photo) feels like the same film.  */
+/* ------------------------------------------------------------------ */
+export const ColorGrade: React.FC = () => (
+  <AbsoluteFill style={{pointerEvents: 'none'}}>
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        background: `linear-gradient(180deg, ${C.teal500} 0%, ${C.teal700} 100%)`,
+        mixBlendMode: 'soft-light',
+        opacity: 0.22,
+      }}
+    />
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(4,48,46,0.20) 100%)',
+      }}
+    />
+  </AbsoluteFill>
 );
