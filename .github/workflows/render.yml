@@ -31,6 +31,7 @@ jobs:
         run: |
           missing=0
           for f in mypicture.jpg background.mp3 \
+            sfx-whoosh.wav sfx-pop.wav sfx-thud.wav sfx-ding.wav SfxTrack.tsx \
             app-islami-bishwakosh-s2.jpg app-islami-bishwakosh.jpg app-shohidullah.jpg \
             app-osman-goni.jpg app-tablig.jpg app-usila.jpg app-rizwantask.png \
             web-islami-bishwakosh-s2.jpg web-islamipedia-ai.jpg web-rizwantask.jpg \
