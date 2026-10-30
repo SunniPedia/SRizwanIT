@@ -1,0 +1,39 @@
+// Design canvas is ALWAYS 1920x1080.
+// HD  render: scale 1  -> 1920x1080
+// 4K  render: --scale=2 -> 3840x2160
+export const WIDTH = 1920;
+export const HEIGHT = 1080;
+export const FPS = 30;
+export const DURATION = 900; // 30s
+
+export const C = {
+  teal900: '#04302E',
+  teal700: '#0B6E6A',
+  teal500: '#0FA3A0',
+  teal300: '#5EEAD4',
+  teal100: '#D7F5F1',
+  ink: '#0A1F1E',
+  paper: '#F4FFFD',
+  white: '#FFFFFF',
+} as const;
+
+// Scene timing. Scenes overlap by TRANSITION frames, so
+// sum(durations) - 5*TRANSITION = 900.
+export const TRANSITION = 12;
+export const SCENE = {
+  hook: 120, //  S1  Looking for introvert App & Developer
+  intro: 135, // S2  Hello, I'm Rizwan
+  role: 135, //  S3  App & Website Developer + CTA
+  apps: 255, //  S4  7 apps
+  web: 185, //   S5  3 websites
+  outro: 130, // S6  Don't DM Now.
+} as const;
+
+export const SCENE_SUM = Object.values(SCENE).reduce((a, b) => a + b, 0);
+if (SCENE_SUM - 5 * TRANSITION !== DURATION) {
+  throw new Error(
+    `Timeline mismatch: ${SCENE_SUM - 5 * TRANSITION} frames, expected ${DURATION}`
+  );
+}
+
+export const FILL_BG = `linear-gradient(180deg, ${C.teal500} 0%, ${C.teal500} 70%, ${C.teal300} 130%)`;
