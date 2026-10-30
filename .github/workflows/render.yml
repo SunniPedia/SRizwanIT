@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "stills = preview frames only | hd | 4k | both"
+        description: "stills/hd/4k/both = 16:9 | vertical-stills/vertical = 9:16 (HD 1080x1920 only)"
         type: choice
         default: stills
-        options: [stills, hd, 4k, both]
+        options: [stills, hd, 4k, both, vertical-stills, vertical]
       release:
         description: "Also publish the MP4(s) as a GitHub Release"
         type: boolean
@@ -36,6 +36,7 @@ jobs:
             app-osman-goni.jpg app-tablig.jpg app-usila.jpg app-rizwantask.png \
             web-islami-bishwakosh-s2.jpg web-islamipedia-ai.jpg web-rizwantask.jpg \
             package.json index.ts Root.tsx Video.tsx Scenes.tsx Components.tsx \
+            VideoVertical.tsx ScenesVertical.tsx \
             AudioTrack.tsx theme.ts fonts.ts remotion.config.ts assets.d.ts; do
             if [ ! -f "$f" ]; then echo "::error::MISSING FILE: $f"; missing=1; fi
           done
@@ -44,19 +45,21 @@ jobs:
         id: m
         run: |
           mode="${{ github.event.inputs.mode }}"
-          HD='{"name":"HD","scale":1,"crf":16}'
-          K4='{"name":"4K","scale":2,"crf":17}'
+          HD='{"name":"HD","scale":1,"crf":16,"comp":"Intro"}'
+          K4='{"name":"4K","scale":2,"crf":17,"comp":"Intro"}'
+          VT='{"name":"Vertical-HD","scale":1,"crf":16,"comp":"IntroVertical"}'
           case "$mode" in
             hd)   m="{\"include\":[$HD]}" ;;
             4k)   m="{\"include\":[$K4]}" ;;
             both) m="{\"include\":[$HD,$K4]}" ;;
+            vertical) m="{\"include\":[$VT]}" ;;
             *)    m="{\"include\":[]}" ;;
           esac
           echo "matrix=$m" >> "$GITHUB_OUTPUT"
 
   stills:
     needs: preflight
-    if: ${{ github.event.inputs.mode == 'stills' }}
+    if: ${{ github.event.inputs.mode == 'stills' || github.event.inputs.mode == 'vertical-stills' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -95,13 +98,16 @@ jobs:
           node "$RUNNER_TEMP/pin.js"
       - run: npm install --no-audit --no-fund --legacy-peer-deps
       - run: npx remotion browser ensure
+      - name: Pick composition (16:9 or 9:16)
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "vertical-stills" ]; then echo "COMP=IntroVertical" >> "$GITHUB_ENV"; else echo "COMP=Intro" >> "$GITHUB_ENV"; fi
       - name: Composition sanity check
         run: npx remotion compositions index.ts
       - name: Render preview stills
         run: |
           # moments with the most on screen (scene starts: 0,108,231,354,597,770)
           for f in 80 200 320 520 640 720 800 890; do
-            npx remotion still index.ts Intro "still-$(printf %03d $f).png" --frame=$f
+            npx remotion still index.ts "$COMP" "still-$COMP-$(printf %03d $f).png" --frame=$f
           done
       - uses: actions/upload-artifact@v4
         with:
@@ -110,7 +116,7 @@ jobs:
 
   render:
     needs: preflight
-    if: ${{ github.event.inputs.mode != 'stills' }}
+    if: ${{ github.event.inputs.mode != 'stills' && github.event.inputs.mode != 'vertical-stills' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -154,7 +160,7 @@ jobs:
       - run: npx remotion browser ensure
       - name: Render ${{ matrix.name }}
         run: |
-          npx remotion render index.ts Intro "Rizwan-${{ matrix.name }}.mp4" \
+          npx remotion render index.ts ${{ matrix.comp }} "Rizwan-${{ matrix.name }}.mp4" \
             --codec=h264 --crf=${{ matrix.crf }} --scale=${{ matrix.scale }} \
             --audio-codec=aac
       - name: Show output info
@@ -183,5 +189,6 @@ jobs:
         run: |
           gh release create "video-${{ github.run_number }}" Rizwan-*.mp4 \
             --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
             --title "Rizwan Video #${{ github.run_number }}" \
             --notes "Rendered by GitHub Actions (mode: ${{ github.event.inputs.mode }})."
