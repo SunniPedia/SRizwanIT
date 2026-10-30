@@ -6,7 +6,7 @@ import thud from './sfx-thud.wav';
 import ding from './sfx-ding.wav';
 
 // All frames are ABSOLUTE (30 fps, 900 total).
-// Scene starts: S1 0 | S2 108 | S3 231 | S4 354 | S5 597 | S6 770
+// Scene starts: Hook 0 | Intro(+focus+pop-ups) 108 | Apps 354 | Websites 597 | Outro 770
 // Change a number here to move a sound. Volume 0..1.
 type Hit = {at: number; src: string; vol: number; len: number};
 
@@ -19,18 +19,17 @@ const hits: Hit[] = [
 
   // transitions (whoosh starts a few frames before the cut)
   {at: 102, src: whoosh, vol: 0.55, len: 20},
-  {at: 225, src: whoosh, vol: 0.6, len: 20},
   {at: 348, src: whoosh, vol: 0.5, len: 20},
   {at: 591, src: whoosh, vol: 0.6, len: 20},
   {at: 764, src: whoosh, vol: 0.7, len: 20},
 
-  // S2 — "Rizwan" name appears
-  {at: 152, src: ding, vol: 0.5, len: 30},
-
-  // S3 — badges + CTA
-  {at: 257, src: pop, vol: 0.6, len: 10},
-  {at: 269, src: pop, vol: 0.6, len: 10},
-  {at: 289, src: ding, vol: 0.5, len: 30},
+  // Intro scene (starts 108): name appears -> camera focuses on photo -> pop-ups -> CTA
+  {at: 152, src: ding, vol: 0.5, len: 30}, //   "Rizwan" appears
+  {at: 211, src: whoosh, vol: 0.4, len: 20}, //  focus / zoom on the photo (108+103)
+  {at: 235, src: pop, vol: 0.6, len: 10}, //     pop-up 1  (108+127)
+  {at: 249, src: pop, vol: 0.6, len: 10}, //     pop-up 2  (108+141)
+  {at: 263, src: pop, vol: 0.6, len: 10}, //     pop-up 3  (108+155)
+  {at: 288, src: ding, vol: 0.5, len: 30}, //    CTA       (108+180)
 
   // S4 — 7 app cards pop in
   {at: 368, src: pop, vol: 0.55, len: 10},

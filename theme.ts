@@ -18,22 +18,20 @@ export const C = {
 } as const;
 
 // Scene timing. Scenes overlap by TRANSITION frames, so
-// sum(durations) - 5*TRANSITION = 900.
+// sum(durations) - (scenes-1)*TRANSITION = 900.
 export const TRANSITION = 12;
 export const SCENE = {
   hook: 120, //  S1  Looking for introvert App & Developer
-  intro: 135, // S2  Hello, I'm Rizwan
-  role: 135, //  S3  App & Website Developer + CTA
+  intro: 258, // S2+S3 ONE continuous scene: Hello I'm Rizwan -> focus on photo -> pop-ups, role, CTA
   apps: 255, //  S4  7 apps
   web: 185, //   S5  3 websites
   outro: 130, // S6  Don't DM Now.
 } as const;
 
 export const SCENE_SUM = Object.values(SCENE).reduce((a, b) => a + b, 0);
-if (SCENE_SUM - 5 * TRANSITION !== DURATION) {
-  throw new Error(
-    `Timeline mismatch: ${SCENE_SUM - 5 * TRANSITION} frames, expected ${DURATION}`
-  );
+const TOTAL = SCENE_SUM - (Object.keys(SCENE).length - 1) * TRANSITION;
+if (TOTAL !== DURATION) {
+  throw new Error(`Timeline mismatch: ${TOTAL} frames, expected ${DURATION}`);
 }
 
 export const FILL_BG = `linear-gradient(180deg, ${C.teal500} 0%, ${C.teal500} 70%, ${C.teal300} 130%)`;

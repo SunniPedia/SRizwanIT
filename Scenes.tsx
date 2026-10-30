@@ -60,18 +60,54 @@ export const SceneHook: React.FC = () => {
   );
 };
 
-/* ---------------- D2  S2 Intro ---------------- */
+/* ------- D2+D3  S2 Intro -> focus on photo -> pop-ups (ONE continuous scene, like the Reference) ------- */
 export const SceneIntro: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const s = spring({frame: frame - 4, fps, config: {damping: 14, stiffness: 90}});
+  const FOCUS = 105; // frame (inside this scene) where the "camera" focuses on the photo
+  const enter = spring({frame: frame - 4, fps, config: {damping: 14, stiffness: 90}});
+  const zoom = spring({frame: frame - FOCUS, fps, config: {damping: 16, stiffness: 70}});
   return (
     <AbsoluteFill>
       <GridBG />
-      <div style={{position: 'absolute', left: 190, top: 250, transform: `translateX(${(1 - s) * -600}px) rotate(${(1 - s) * -8}deg)`, opacity: Math.min(1, s * 2)}}>
-        <Portrait size={580} />
+
+      {/* soft glow that appears when the focus moves to the photo */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 190 - 70,
+          top: 250 - 70,
+          width: 720,
+          height: 720,
+          borderRadius: '50%',
+          background: 'radial-gradient(closest-side, rgba(94,234,212,0.55), transparent)',
+          opacity: zoom,
+          transform: `scale(${1 + 0.22 * zoom})`,
+        }}
+      />
+
+      {/* portrait: slides in, then zooms in (focus) */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 190,
+          top: 250,
+          transform: `translateX(${(1 - enter) * -600}px) rotate(${(1 - enter) * -8}deg)`,
+          opacity: Math.min(1, enter * 2),
+        }}
+      >
+        <div style={{transform: `scale(${1 + 0.22 * zoom})`}}>
+          <Portrait size={580} />
+        </div>
       </div>
-      <div style={{position: 'absolute', left: 960, top: 300, width: 900}}>
+
+      {/* pop-ups float up around the photo */}
+      <Badge text="Android Apps" delay={FOCUS + 22} style={{left: 590, top: 205}} />
+      <Badge text="Websites" delay={FOCUS + 36} variant="light" style={{left: 80, top: 815}} />
+      <Badge text="IslamiPedia AI" delay={FOCUS + 50} style={{left: 640, top: 790}} />
+
+      {/* text block: name first, then role + CTA appear under it */}
+      <div style={{position: 'absolute', left: 960, top: 230, width: 900, transform: `translateY(${(1 - zoom) * 70}px)`}}>
         <div style={{opacity: fadeIn(frame, 16), transform: `translateY(${(1 - fadeIn(frame, 16)) * 20}px)`, display: 'inline-flex', alignItems: 'center', gap: 12, padding: '10px 24px', borderRadius: 999, border: `2px solid ${C.teal700}`, fontFamily: F.badge, fontWeight: 500, fontSize: 26, color: C.teal700}}>
           <span style={{width: 12, height: 12, borderRadius: 6, background: C.teal700}} />
           Introvert by choice
@@ -79,33 +115,11 @@ export const SceneIntro: React.FC = () => {
         <BlurText text="Hello, I'm" fontFamily={F.hello} fontSize={110} fontWeight={800} color={C.teal900} start={26} stagger={8} style={{justifyContent: 'flex-start', marginTop: 24}} />
         <BlurText text="Rizwan" fontFamily={F.name} fontSize={190} fontWeight={900} color={C.teal500} start={44} stagger={8} style={{justifyContent: 'flex-start', marginTop: -10}} />
         <Squiggle width={520} start={70} duration={25} style={{marginTop: 4}} />
-      </div>
-    </AbsoluteFill>
-  );
-};
-
-/* ---------------- D3  S3 Role ---------------- */
-export const SceneRole: React.FC = () => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const s = spring({frame: frame - 2, fps, config: {damping: 15, stiffness: 90}});
-  const scale = 0.85 + 0.15 * s;
-  return (
-    <AbsoluteFill>
-      <GridBG />
-      <div style={{position: 'absolute', left: 1010, top: 190, transform: `scale(${scale}) rotate(${(1 - s) * 6}deg)`, opacity: Math.min(1, s * 2)}}>
-        <Portrait size={700} />
-      </div>
-      <Badge text="Android Apps" delay={26} style={{left: 930, top: 250}} />
-      <Badge text="Websites" delay={38} variant="light" style={{left: 1520, top: 830}} />
-      <div style={{position: 'absolute', left: 110, top: 270, width: 850}}>
-        <BlurText text="App &" fontFamily={F.role} fontSize={130} fontWeight={800} color={C.teal900} start={8} stagger={7} style={{justifyContent: 'flex-start'}} />
-        <BlurText text="Website" fontFamily={F.role} fontSize={130} fontWeight={800} color={C.teal500} start={18} stagger={7} style={{justifyContent: 'flex-start'}} />
-        <BlurText text="Developer" fontFamily={F.role} fontSize={130} fontWeight={800} color={C.teal900} start={28} stagger={7} style={{justifyContent: 'flex-start'}} />
-        <div style={{fontFamily: F.bn, fontWeight: 700, fontSize: 40, color: C.teal700, marginTop: 20, opacity: fadeIn(frame, 46)}}>
+        <BlurText text="App & Website Developer" fontFamily={F.role} fontSize={62} fontWeight={800} color={C.teal700} start={FOCUS + 30} stagger={6} style={{justifyContent: 'flex-start', marginTop: 18}} />
+        <div style={{fontFamily: F.bn, fontWeight: 700, fontSize: 38, color: C.teal900, marginTop: 8, opacity: fadeIn(frame, FOCUS + 55)}}>
           অ্যাপ ও ওয়েবসাইট ডেভেলপার
         </div>
-        <CTA text="See My Work" delay={58} style={{marginTop: 40}} />
+        <CTA text="See My Work" delay={FOCUS + 75} style={{marginTop: 34}} />
       </div>
     </AbsoluteFill>
   );
@@ -178,7 +192,10 @@ export const SceneOutro: React.FC = () => {
   const rise = (start: number) => ({opacity: fadeIn(frame, start), transform: `translateY(${(1 - fadeIn(frame, start)) * 24}px)`});
   return (
     <AbsoluteFill style={{background: FILL_BG, justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-      <div style={{fontFamily: F.dm, fontSize: 330, lineHeight: 1, color: C.white, letterSpacing: 4, textShadow: '0 14px 50px rgba(4,48,46,0.4)', opacity: Math.min(1, stamp * 2), transform: `scale(${1.7 - 0.7 * stamp}) rotate(${-4 * (1 - stamp)}deg)`}}>
+      <div style={{...rise(2), fontFamily: F.dm, fontSize: 150, lineHeight: 1, letterSpacing: 12, color: C.teal900}}>
+        Please
+      </div>
+      <div style={{fontFamily: F.dm, fontSize: 330, marginTop: -6, lineHeight: 1, color: C.white, letterSpacing: 4, textShadow: '0 14px 50px rgba(4,48,46,0.4)', opacity: Math.min(1, stamp * 2), transform: `scale(${1.7 - 0.7 * stamp}) rotate(${-4 * (1 - stamp)}deg)`}}>
         Don’t DM Now.
       </div>
       <div style={{...rise(40), fontFamily: F.tagline, fontWeight: 600, fontSize: 44, color: C.teal900, marginTop: 6, display: 'flex', alignItems: 'center', gap: 12}}>

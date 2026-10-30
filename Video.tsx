@@ -5,7 +5,7 @@ import {fade} from '@remotion/transitions/fade';
 import {slide} from '@remotion/transitions/slide';
 import {wipe} from '@remotion/transitions/wipe';
 import {SCENE, TRANSITION} from './theme';
-import {SceneHook, SceneIntro, SceneRole, SceneApps, SceneWeb, SceneOutro} from './Scenes';
+import {SceneHook, SceneIntro, SceneApps, SceneWeb, SceneOutro} from './Scenes';
 import {AudioTrack} from './AudioTrack';
 import {SfxTrack} from './SfxTrack';
 import './fonts'; // make sure every font loads
@@ -22,10 +22,6 @@ export const Video: React.FC = () => {
         <TransitionSeries.Transition presentation={fade()} timing={t} />
         <TransitionSeries.Sequence durationInFrames={SCENE.intro}>
           <SceneIntro />
-        </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({direction: 'from-right'})} timing={t} />
-        <TransitionSeries.Sequence durationInFrames={SCENE.role}>
-          <SceneRole />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition presentation={fade()} timing={t} />
         <TransitionSeries.Sequence durationInFrames={SCENE.apps}>

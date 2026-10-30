@@ -11,7 +11,7 @@
 | বিষয় | মান |
 |---|---|
 | মালিক | **Rizwan Chowdhury** — App & Website Developer |
-| থিম/হুক | **"Looking for introvert App & Developer"** → শেষে **"Don't DM Now."** |
+| থিম/হুক | **"Looking for introvert App & Developer"** → শেষে **"Please don't DM Now."** |
 | দৈর্ঘ্য | **30 সেকেন্ড** = 900 ফ্রেম @ 30 fps |
 | অনুপাত | **16:9** |
 | আউটপুট | **HD 1920×1080** এবং **4K 3840×2160** (দুটোই) |
@@ -32,7 +32,7 @@
 | 3 | ছবি বড় হয়, ফ্লোটিং ব্যাজ ("AI Powered"), রোল লাইন, কালো CTA বাটন | "App & Website Developer", ফ্লোটিং ব্যাজ, "See My Work →" |
 | 4 | "Video Projects / Reel Edits" — ফোন-কার্ড মকআপ স্লাইড | **Apps** — ৭টি অ্যাপ কার্ড |
 | 5 | (একই ধরন) | **Websites** — ৩টি ফোন মকআপ |
-| 6 | হলুদ BG "Let's…" ট্রানজিশন → সাদা "DM NOW" + নাম + রোল | Teal ট্রানজিশন → **"Don't DM Now."** + নাম + রোল |
+| 6 | হলুদ BG "Let's…" ট্রানজিশন → সাদা "DM NOW" + নাম + রোল | Teal ট্রানজিশন → **"Please don't DM Now."** + নাম + রোল |
 
 ---
 
@@ -76,11 +76,11 @@
 | দৃশ্য | সময় | ফ্রেম | বিষয়বস্তু |
 |---|---|---|---|
 | S1 Hook | 0.0–3.5s | 0–105 | Teal BG • "Looking for" → "Introvert App & Developer" (শব্দ ধরে blur-in) |
-| S2 Intro | 3.5–7.5s | 105–225 | সাদাটে BG • গোল ছবি স্লাইড-ইন • "Hello, I'm **Rizwan**" • পিল "Introvert by choice" |
-| S3 Role | 7.5–11.5s | 225–345 | ছবি বড় • ২টি ফ্লোটিং ব্যাজ • "App & Website Developer" • "See My Work →" |
+| S2+S3 Intro (এক টানা দৃশ্য) | 3.6–12.2s | 108–366 | Reference-এর মতো **একই ফ্রেমে**: ছবি স্লাইড-ইন • "Hello, I'm **Rizwan**" + পিল "Introvert by choice" → নাম দেখানোর পর **ছবিতে ফোকাস (জুম)** → ছবির চারপাশে পপ-আপ ব্যাজ ভেসে ওঠে (Android Apps, Websites, IslamiPedia AI) → নিচে "App & Website Developer" + "See My Work →" |
+| ~~S3 Role~~ | — | — | **S2-র সঙ্গে মিশিয়ে ফেলা হয়েছে** (আলাদা দৃশ্য ও আলাদা ট্রানজিশন নেই) |
 | S4 Apps | 11.5–19.0s | 345–570 | "Apps" টাইটেল • ৭ অ্যাপ কার্ড দুই সারিতে স্লাইড/স্ট্যাগার |
 | S5 Websites | 19.0–24.5s | 570–735 | "Websites" টাইটেল • ৩টি ফোন মকআপ (ছবি স্ক্রল করে) |
-| S6 Outro | 24.5–30.0s | 735–900 | Teal wipe • "Don't DM Now." • নাম • রোল লাইন • সিগনেচার আন্ডারলাইন |
+| S6 Outro | 25.7–30.0s | 770–900 | Teal wipe • **"Please" (ছোট) + "Don't DM Now." (বড় স্ট্যাম্প)** • "(I'll reply when I'm ready 🙂)" • নাম • রোল লাইন • সিগনেচার আন্ডারলাইন |
 
 ট্রানজিশন: প্রতি দৃশ্যের মাঝে ১০–১২ ফ্রেম ক্রসফেড/স্লাইড (`@remotion/transitions`)।
 অডিও: ০–১s fade-in, শেষ ১.৫s fade-out; ভলিউম ০.৮।
@@ -146,12 +146,12 @@ RizwanVideo.md          README.md
 
 ### ধাপ D — দৃশ্য নির্মাণ (প্রতিটি আলাদা ধাপ; ছোট ছোট কমিটে)
 - [x] **D1. S1 Hook** — Teal গ্রেডিয়েন্ট; "Looking for" (SpaceGrotesk) ছোট, নিচে "Introvert App & Developer" (Unbounded) BlurText।
-- [x] **D2. S2 Intro** — গোল ফ্রেমে `mypicture.jpg` (Teal-300 বৃত্তের ওপর), বাম থেকে স্লাইড; "Hello, I'm" + *Rizwan* ডানে; পিল "Introvert by choice"।
-- [x] **D3. S3 Role** — ছবি স্কেল-আপ + স্থান পরিবর্তন; ব্যাজ "+ Android Apps", "+ Websites"; রোল লাইন; CTA "See My Work →"।
+- [x] **D2. S2 Intro** — (এখন D3-র সঙ্গে এক দৃশ্য) আগের বিবরণ: গোল ফ্রেমে `mypicture.jpg` (Teal-300 বৃত্তের ওপর), বাম থেকে স্লাইড; "Hello, I'm" + *Rizwan* ডানে; পিল "Introvert by choice"। **বাস্তবায়ন:** গোলকোণ কার্ড।
+- [x] **D3. S3 Role** — (এখন S2-র ভেতরেই) নাম দেখানোর পর ছবি জুম-ইন (ফোকাস) + গ্লো; ব্যাজ "+ Android Apps", "+ Websites", "+ IslamiPedia AI" ছবির চারপাশে ভেসে ওঠে; নামের নিচে রোল লাইন "App & Website Developer" + বাংলা লাইন; CTA "See My Work →"। কোড: `SceneIntro` (`Scenes.tsx`), `FOCUS = 105` ফ্রেমে ফোকাস শুরু।
 - [x] **D4. S4 Apps** — "Apps" টাইটেল (Playfair) + আন্ডারলাইন; ৭ কার্ড (৪+৩) স্ট্যাগার-ইন, হালকা ববিং।
 - [x] **D5. S5 Websites** — "Websites" টাইটেল (Sora); ৩ ফোন মকআপ, মাঝেরটি বড়; ভেতরে ধীর স্ক্রল; নিচে সাইটের নাম।
-- [x] **D6. S6 Outro** — Teal wipe; "Don't DM Now." (Bebas) বড় স্ট্যাম্প; তার নিচে ছোট "(I'll reply when I'm ready" + `<Smile/>` + ")" (ফন্ট: `tagline`); নিচে "Rizwan Chowdhury" (Cormorant) + "App & Website Developer" (Manrope); ছোট আন্ডারলাইন স্ট্রোক।
-- [x] **D7.** `Video.tsx` — `TransitionSeries` দিয়ে ৬ দৃশ্য জোড়া; মোট ঠিক **900 ফ্রেম** যাচাই।
+- [x] **D6. S6 Outro** — Teal wipe; **"Please" (Bebas, ছোট, উপরে) + "Don't DM Now." (Bebas, বড় স্ট্যাম্প)** = পুরো লেখা "Please don't DM Now."; তার নিচে ছোট "(I'll reply when I'm ready" + `<Smile/>` + ")" (ফন্ট: `tagline`); নিচে "Rizwan Chowdhury" (Cormorant) + "App & Website Developer" (Manrope); ছোট আন্ডারলাইন স্ট্রোক।
+- [x] **D7.** `Video.tsx` — `TransitionSeries` দিয়ে **৫ দৃশ্য** জোড়া (S2+S3 মিলিয়ে; হিসাব: ১২০+২৫৮+২৫৫+১৮৫+১৩০ − ৪×১২ = **৯০০ ফ্রেম**); `theme.ts` ভুল হলে নিজেই error দেয়।
 
 ### ধাপ E — লোকাল-ছাড়া ভিজ্যুয়াল চেক (মোবাইল-ফ্রেন্ডলি)
 - [x] **E1.** Actions-এ `still` জব: গুরুত্বপূর্ণ ফ্রেম (0, 60, 150, 300, 450, 650, 800, 890) PNG রেন্ডার → আর্টিফ্যাক্ট। পুরো রেন্ডারের আগে এগুলো দেখে নিন (সময়/ক্রেডিট বাঁচে)।
@@ -193,7 +193,7 @@ RizwanVideo.md          README.md
 
 1. **S2-এর ছোট পিল:** "Introvert by choice" ✔ ডিফল্ট — অন্য লেখা চাইলে বলুন।
 2. **S3 ব্যাজ:** "Android Apps" ও "Websites" ✔ ডিফল্ট (আপনার সঠিক টেক-স্ট্যাক জানালে ব্যাজ নিখুঁত হবে — যেমন React Native/Flutter/React)।
-3. **S6 ট্যাগলাইন:** ✔ **চূড়ান্ত:** "Don't DM Now." + নিচে ছোট করে "(I'll reply when I'm ready 🙂)" — 🙂 টেক্সট ইমোজি নয়, `Smile` SVG কম্পোনেন্ট (রানারে ইমোজি ফন্ট নাও থাকতে পারে)।
+3. **S6 ট্যাগলাইন:** ✔ **চূড়ান্ত:** "Please don't DM Now." (দুই লাইন: Please ছোট, Don't DM Now. বড়) + নিচে ছোট করে "(I'll reply when I'm ready 🙂)" — 🙂 টেক্সট ইমোজি নয়, `Smile` SVG কম্পোনেন্ট (রানারে ইমোজি ফন্ট নাও থাকতে পারে)।
 4. **যোগাযোগ লিংক:** ভিডিওতে কোনো ইমেইল/লিংক দেখাব না (আপনার "Don't DM" থিম অনুযায়ী) — চাইলে দৃশ্য ৬-এ ওয়েবসাইট লিংক যোগ হবে।
 5. **ইসলামী অ্যাপের বাংলা নাম:** কার্ডে ক্যাপশন হিসেবে ছবির লেখার মতোই ব্যবহার হবে।
 
@@ -214,6 +214,7 @@ RizwanVideo.md ফেরত দাও এবং পরের ধাপের এ
 | তারিখ | ধাপ | নোট |
 |---|---|---|
 | 2026-10-30 | প্ল্যান তৈরি | RizwanVideo.md প্রথম সংস্করণ |
+| 2026-10-30 | S2+S3 একত্র, "Please" | Reference-এর মতো নাম → ছবিতে ফোকাস → পপ-আপ একই দৃশ্যে (`Scenes.tsx` `SceneIntro`; `SceneRole` মুছে ফেলা)। `theme.ts` `SCENE` থেকে `role` বাদ, `intro: 258`, টাইমলাইন-চেক ডায়নামিক। `Video.tsx` থেকে একটি Sequence+Transition কমেছে। `SfxTrack.tsx` পুনর্বিন্যাস (ফোকাসে হালকা whoosh, ৩টি পপ-আপে pop, CTA-তে ding)। আউট্রো: "Please don't DM Now."। **অন্য সব আগের মতোই; মোট এখনো ৯০০ ফ্রেম।** |
 | 2026-10-30 | SFX | মিউজিক ভলিউম 0.8→0.3 (`AudioTrack.tsx`-এর `MUSIC_VOLUME`)। নতুন `SfxTrack.tsx` + ৪টি WAV (`sfx-whoosh/pop/thud/ding.wav`, কোডে সিনথেসাইজ করা, কপিরাইট-মুক্ত) রুটে আপলোড করতে হবে। `Video.tsx`, `assets.d.ts`, `render.yml` (preflight) আপডেট। সাউন্ডের ফ্রেম বদলাতে `SfxTrack.tsx`-এর `hits` তালিকা। |
 | 2026-10-30 | অডিও লুপ | `AudioTrack.tsx`-এ `loop` যোগ: mp3 ভিডিওর (৩০s) চেয়ে ছোট হলে নিজে থেকে রিপিট হয়, বড় হলে ৩০sএ কাটা পড়ে। `render.yml` বদলাতে হয়নি। |
 | 2026-10-30 | F সংশোধন | `render.yml`-এ "Auto-fix Remotion versions" স্টেপ: package.json-এর সংস্করণ npm-এ থাকলে রাখে, না থাকলে সর্বশেষ **4.x** বসায় (5.x নয়)। `--legacy-peer-deps` যোগ, `--concurrency` সরানো (রানারের কোর অনুযায়ী অটো)। স্ক্রিপ্ট লোকালি পরীক্ষিত। **E2 ও G আপনার রানের অপেক্ষায়** — এই পরিবেশ থেকে আপনার GitHub-এ Actions চালানো যায় না। |
