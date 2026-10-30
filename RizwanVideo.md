@@ -94,7 +94,7 @@ package.json            tsconfig.json         remotion.config.ts
 index.ts                Root.tsx              Video.tsx
 theme.ts                fonts.ts              Scenes.tsx   (S1–S6 একসাথে বা আলাদা ফাইল)
 Components.tsx          (BlurText, Badge, PhoneMock, AppCard, CTA, GridBG)
-mypicture.jpg           background.mp3
+mypicture.jpg           background.mp3   sfx-whoosh.wav sfx-pop.wav sfx-thud.wav sfx-ding.wav   SfxTrack.tsx
 app-islami-bishwakosh-s2.jpg   app-islami-bishwakosh.jpg   app-shohidullah.jpg
 app-osman-goni.jpg      app-tablig.jpg   app-usila.jpg   app-rizwantask.png
 web-islami-bishwakosh-s2.jpg   web-islamipedia-ai.jpg   web-rizwantask.jpg
@@ -214,6 +214,7 @@ RizwanVideo.md ফেরত দাও এবং পরের ধাপের এ
 | তারিখ | ধাপ | নোট |
 |---|---|---|
 | 2026-10-30 | প্ল্যান তৈরি | RizwanVideo.md প্রথম সংস্করণ |
+| 2026-10-30 | SFX | মিউজিক ভলিউম 0.8→0.3 (`AudioTrack.tsx`-এর `MUSIC_VOLUME`)। নতুন `SfxTrack.tsx` + ৪টি WAV (`sfx-whoosh/pop/thud/ding.wav`, কোডে সিনথেসাইজ করা, কপিরাইট-মুক্ত) রুটে আপলোড করতে হবে। `Video.tsx`, `assets.d.ts`, `render.yml` (preflight) আপডেট। সাউন্ডের ফ্রেম বদলাতে `SfxTrack.tsx`-এর `hits` তালিকা। |
 | 2026-10-30 | অডিও লুপ | `AudioTrack.tsx`-এ `loop` যোগ: mp3 ভিডিওর (৩০s) চেয়ে ছোট হলে নিজে থেকে রিপিট হয়, বড় হলে ৩০sএ কাটা পড়ে। `render.yml` বদলাতে হয়নি। |
 | 2026-10-30 | F সংশোধন | `render.yml`-এ "Auto-fix Remotion versions" স্টেপ: package.json-এর সংস্করণ npm-এ থাকলে রাখে, না থাকলে সর্বশেষ **4.x** বসায় (5.x নয়)। `--legacy-peer-deps` যোগ, `--concurrency` সরানো (রানারের কোর অনুযায়ী অটো)। স্ক্রিপ্ট লোকালি পরীক্ষিত। **E2 ও G আপনার রানের অপেক্ষায়** — এই পরিবেশ থেকে আপনার GitHub-এ Actions চালানো যায় না। |
 | 2026-10-30 | ধাপ E+F ✔ | `.github/workflows/render.yml` (jobs: preflight → stills / render(HD,4K সমান্তরাল) → release) + `README.md`। preflight জব রিপোতে ১০টি ছবি/mp3/কোড ফাইল আছে কি না আগে যাচাই করে। **চালানো বাকি** → E2 ও G। |

@@ -7,6 +7,7 @@ import {wipe} from '@remotion/transitions/wipe';
 import {SCENE, TRANSITION} from './theme';
 import {SceneHook, SceneIntro, SceneRole, SceneApps, SceneWeb, SceneOutro} from './Scenes';
 import {AudioTrack} from './AudioTrack';
+import {SfxTrack} from './SfxTrack';
 import './fonts'; // make sure every font loads
 
 const t = linearTiming({durationInFrames: TRANSITION});
@@ -40,6 +41,7 @@ export const Video: React.FC = () => {
         </TransitionSeries.Sequence>
       </TransitionSeries>
       <AudioTrack />
+      <SfxTrack />
     </AbsoluteFill>
   );
 };
